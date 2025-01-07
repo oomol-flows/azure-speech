@@ -1,1 +1,51 @@
-nodes: []
+nodes:
+  - task:
+      ui:
+        default_width: 450
+      inputs_def:
+        - handle: speek_text
+          description: Input
+          json_schema:
+            type: string
+            ui:widget: text
+        - handle: output_path
+          json_schema:
+            type: string
+            ui:widget: file
+          value: ""
+        - handle: voice
+          json_schema:
+            type: string
+          value: ""
+        - handle: SPEECH_KEY
+          json_schema:
+            contentMediaType: oomol/secret
+            type: string
+          value: ""
+        - handle: SPEECH_REGION
+          json_schema:
+            type: string
+          value: ""
+      outputs_def:
+        []
+      executor:
+        name: python
+        options:
+          entry: scriptlets/+python#1.py
+    title: Speech
+    icon: ":logos:python:"
+    node_id: +python#1
+    inputs_from:
+      - handle: speek_text
+        value: >-
+          最终，这个SRT文件被传送到这个区块。它是一个ffmpeg区块，会将字幕文件烧录到原视频之中。比如，这个区块从最开始的我们设置原视频的区块读取视频文件，然后将我们先前翻译的SRT文件烧录上去。最终烧录的成果，就是带有中文字幕的视频了。都看到这里了，给个一键三连吧，这样up才有
+
+          动力发更多的实用工具流程视频哦。
+      - handle: output_path
+        value: /oomol-driver/oomol-storage/target.wav
+      - handle: voice
+        value: zh-CN-XiaochenNeural
+      - handle: SPEECH_KEY
+        value: Custom,Azure,Speach
+      - handle: SPEECH_REGION
+        value: eastasia
