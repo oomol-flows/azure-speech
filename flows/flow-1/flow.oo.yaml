@@ -3,16 +3,25 @@ nodes:
     title: "Speech #1"
     node_id: speech#1
     inputs_from:
-      - handle: speek_text
-        value: >-
-          最终，这个SRT文件被传送到这个区块。它是一个ffmpeg区块，会将字幕文件烧录到原视频之中。比如，这个区块从最开始的我们设置原视频的区块读取视频文件，然后将我们先前翻译的SRT文件烧录上去。最终烧录的成果，就是带有中文字幕的视频了。都看到这里了，给个一键三连吧，这样up才有
-
-          动力发更多的实用工具流程视频哦。
       - handle: output_path
-        value: /oomol-driver/oomol-storage/target.wav
+        value:
       - handle: voice
         value: zh-CN-XiaochenNeural
-      - handle: SPEECH_KEY
-        value: Custom,Azure,Speach
-      - handle: SPEECH_REGION
+      - handle: region
         value: eastasia
+      - handle: text_kind
+        value: text
+      - handle: key
+        value: Custom,Azure,Speach
+      - handle: granularity
+        value: none
+      - handle: text
+        value: 《卫报》的研究认为大多数人之后的词汇量都不会有太大的变化。它还指出，12000词汇量基本等同于流行报纸每天文章里的词汇量。但是大学毕业生的词汇量大约是其2倍，约23000个。莎士比亚则是所有英语作家中词汇量较大的之一，约30000个单词。
+  - task: oomol-preview::audio-preview
+    title: "Audio preview #1"
+    node_id: audio-preview#1
+    inputs_from:
+      - handle: audio_path
+        from_node:
+          - node_id: speech#1
+            output_handle: output_path

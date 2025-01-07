@@ -1,54 +1,72 @@
-import threading
-import azure.cognitiveservices.speech as speechsdk
+import os
 
-from typing import cast, Any
+from dataclasses import asdict
+from typing import cast, Literal, Any
+from oocana import Context
+from azure.cognitiveservices.speech import SpeechSynthesizer, SpeechSynthesisResult, ResultReason, SpeechConfig, PropertyId, CancellationReason
+from azure.cognitiveservices.speech.audio import AudioOutputConfig
+from .words_collection import WordsCollection
 
 # https://learn.microsoft.com/zh-cn/azure/ai-services/speech-service/get-started-text-to-speech?tabs=linux%2Cterminal&pivots=programming-language-python
 # https://learn.microsoft.com/zh-cn/azure/ai-services/speech-service/language-support?tabs=tts
-def main(params: dict):
-  # This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
-  speech_config = speechsdk.SpeechConfig(
-    subscription=params["SPEECH_KEY"], 
-    region=params["SPEECH_REGION"],
+def main(params: dict, context: Context):
+  output_path: str | None = params["output_path"]
+  if output_path is None:
+    output_path = os.path.join(context.session_dir, f"{context.job_id}.wav")
+
+  speech_config = SpeechConfig(
+    subscription=params["key"], 
+    region=params["region"],
   )
   speech_config.set_property(
-    property_id=speechsdk.PropertyId.SpeechServiceResponse_RequestSentenceBoundary, value='true',
+    property_id=PropertyId.SpeechServiceResponse_RequestSentenceBoundary, 
+    value="true",
   )
-  speech_config.request_word_level_timestamps()
-  audio_config = speechsdk.audio.AudioOutputConfig(
+  audio_config = AudioOutputConfig(
     use_default_speaker=True,
     stream=cast(Any, None),
-    filename=params["output_path"],
+    filename=output_path,
   )
-  # The neural multilingual voice can speak different languages based on the input text.
+  text: str = params["text"]
+  granlarity: Literal["none", "sentence", "word"] = params["granularity"]
+
+  if granlarity != "none":
+    speech_config.request_word_level_timestamps()
+
   speech_config.speech_synthesis_voice_name=params["voice"]
-  speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
-  text = params["speek_text"]
+  speech_synthesizer = SpeechSynthesizer(
+    speech_config=speech_config, 
+    audio_config=audio_config,
+  )
+  words: WordsCollection | None = None
 
-  words: list = []
-  words_lock = threading.Lock()
+  if granlarity != "none":
+    words = WordsCollection(
+      synthesizer=speech_synthesizer,
+      only_sentence=(granlarity == "sentence"),
+    )
+  result = speech_synthesizer.speak_text_async(text).get()
+  result = cast(SpeechSynthesisResult, result)
 
-  def word_boundary_handler(evt):
-    nonlocal words, words_lock
-    with words_lock:
-      words.append(f'Word: {evt.text}, Start: {evt.audio_offset / 10000} ms, Duration: {evt.duration.total_seconds()*1000}, Start(length): {evt.text_offset}, Duration(length): {evt.word_length}, Type: {str(evt.boundary_type).split(".")[-1]} \n')
+  _raise_if_find_error(result)
 
-  speech_synthesizer.synthesis_word_boundary.connect(word_boundary_handler)
-  speech_synthesis_result = speech_synthesizer.speak_text_async(text).get()
-  speech_synthesis_result = cast(speechsdk.SpeechSynthesisResult, speech_synthesis_result)
+  return {
+    "output_path": output_path,
+    "sentences": _serialize_sentences(words),
+  }
 
-  if speech_synthesis_result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
-    print("Speech synthesized for text [{}]".format(text))
-  elif speech_synthesis_result.reason == speechsdk.ResultReason.Canceled:
-    cancellation_details = speech_synthesis_result.cancellation_details
-    print("Speech synthesis canceled: {}".format(cancellation_details.reason))
-    if cancellation_details.reason == speechsdk.CancellationReason.Error:
-      if cancellation_details.error_details:
-        print("Error details: {}".format(cancellation_details.error_details))
+def _raise_if_find_error(result: SpeechSynthesisResult):
+  if result.reason == ResultReason.Canceled:
+    details = result.cancellation_details
+    print("Speech synthesis canceled: {}".format(details.reason))
+    if details.reason == CancellationReason.Error:
+      if details.error_details:
+        print("Error details: {}".format(details.error_details))
         print("Did you set the speech resource key and region values?")
     raise Exception("Speech synthesis failed.")
 
-  # TODO: https://learn.microsoft.com/zh-cn/azure/ai-services/speech-service/how-to-speech-synthesis?tabs=browserjs%2Cterminal&pivots=programming-language-python#customize-audio-format
-  with words_lock:
-    for word in words:
-      print(word)
+def _serialize_sentences(words: WordsCollection | None):
+  if words is None:
+    return []
+  else:
+    return [asdict(s) for s in words.take_sentences()]

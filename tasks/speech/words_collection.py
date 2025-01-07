@@ -1,34 +1,42 @@
 from io import StringIO
 from sys import maxsize
 from dataclasses import dataclass
-from typing import cast, Any
-from azure.cognitiveservices.speech import SpeechSynthesizer
+from typing import Any
+from azure.cognitiveservices.speech import SpeechSynthesizer, SpeechSynthesisBoundaryType
 
 
 @dataclass
 class Segment:
-  text: str = ""
-  begin_at: float = 0.0
-  duration: float = 0.0
-  offset: int = 0
-  length: int = 0
+  text: str
+  begin_at: float
+  duration: float
+  offset: int
+  length: int
 
+@dataclass
 class Sentence(Segment):
+  segments: list[Segment]
   kind: str = "sentence"
-  segments: list[Segment] = []
 
+@dataclass
 class Word(Segment):
   kind: str = "word"
 
+@dataclass
 class Punctuation(Segment):
   kind: str = "punctuation"
 
 # https://learn.microsoft.com/zh-cn/azure/ai-services/speech-service/how-to-speech-synthesis?tabs=browserjs%2Cterminal&pivots=programming-language-python#customize-audio-format
 class WordsCollection:
-  def __init__(self, synthesizer: SpeechSynthesizer) -> None:
+  def __init__(
+      self, 
+      synthesizer: SpeechSynthesizer,
+      only_sentence: bool,
+    ) -> None:
     synthesizer.synthesis_word_boundary.connect(self._on_word)
+    self._only_sentence: bool = only_sentence
     self._sentences: list[Sentence] = []
-    self._current_sentence: Sentence = Sentence()
+    self._current_sentence: Sentence = self._create_empty_sentence()
 
   def take_sentences(self) -> list[Sentence]:
     self._handle_latest_setence()
@@ -42,9 +50,9 @@ class WordsCollection:
     duration: float = evt.duration.total_seconds() * 1000.0
     offset: int = evt.text_offset
     length: int = evt.word_length
-    type = cast(str, evt.boundary_type).split(".")[-1]
+    type: SpeechSynthesisBoundaryType = evt.boundary_type
 
-    if type == "Word":
+    if type == SpeechSynthesisBoundaryType.Word and not self._only_sentence:
       self._current_sentence.segments.append(Word(
         text=text,
         begin_at=begin_at,
@@ -52,7 +60,7 @@ class WordsCollection:
         offset=offset,
         length=length,
       ))
-    elif type == "Punctuation":
+    elif type == SpeechSynthesisBoundaryType.Punctuation and not self._only_sentence:
       self._current_sentence.segments.append(Punctuation(
         text=text,
         begin_at=begin_at,
@@ -60,14 +68,14 @@ class WordsCollection:
         offset=offset,
         length=length,
       ))
-    elif type == "Sentence":
+    elif type == SpeechSynthesisBoundaryType.Sentence:
       self._current_sentence.text = text
       self._current_sentence.begin_at = begin_at
       self._current_sentence.duration = duration
       self._current_sentence.offset = offset
       self._current_sentence.length = length
       self._sentences.append(self._current_sentence)
-      self._current_sentence = Sentence()
+      self._current_sentence = self._create_empty_sentence()
 
   def _handle_latest_setence(self):
     sentence = self._current_sentence
@@ -94,4 +102,14 @@ class WordsCollection:
     sentence.length = text_end - text_begin
 
     self._sentences.append(sentence)
-    self._current_sentence = Sentence()
+    self._current_sentence = self._create_empty_sentence()
+
+  def _create_empty_sentence(self) -> Sentence:
+    return Sentence(
+      text="",
+      begin_at=0,
+      duration=0,
+      offset=0,
+      length=0,
+      segments=[],
+    )

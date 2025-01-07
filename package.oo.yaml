@@ -7,3 +7,5 @@ scripts:
     sudo apt-get update
     pip install --upgrade pip
     pip install -r requirements.txt
+dependencies:
+  oomol-preview: 0.0.1
