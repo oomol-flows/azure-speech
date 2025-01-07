@@ -1,27 +1,32 @@
 inputs_def:
-  - handle: speek_text
-    description: Input
+  - handle: text
     json_schema:
       type: string
       ui:widget: text
+  - handle: text_kind
+    json_schema:
+      enum:
+        - text
+        - ssml
+      ui:options:
+        labels:
+          - Text
+          - SSML
+    value: text
+  - handle: region
+    json_schema:
+      type: string
+  - handle: key
+    json_schema:
+      contentMediaType: oomol/secret
+      type: string
   - handle: output_path
     json_schema:
       type: string
       ui:widget: file
-    value: ""
   - handle: voice
     json_schema:
       type: string
-    value: ""
-  - handle: SPEECH_KEY
-    json_schema:
-      contentMediaType: oomol/secret
-      type: string
-    value: ""
-  - handle: SPEECH_REGION
-    json_schema:
-      type: string
-    value: ""
 outputs_def:
   []
 ui:
@@ -29,6 +34,6 @@ ui:
 executor:
   name: python
   options:
+    entry: __init__.py
     spawn: false
-    entry: main.py
 title: Speech
