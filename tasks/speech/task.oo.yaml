@@ -1,0 +1,34 @@
+inputs_def:
+  - handle: speek_text
+    description: Input
+    json_schema:
+      type: string
+      ui:widget: text
+  - handle: output_path
+    json_schema:
+      type: string
+      ui:widget: file
+    value: ""
+  - handle: voice
+    json_schema:
+      type: string
+    value: ""
+  - handle: SPEECH_KEY
+    json_schema:
+      contentMediaType: oomol/secret
+      type: string
+    value: ""
+  - handle: SPEECH_REGION
+    json_schema:
+      type: string
+    value: ""
+outputs_def:
+  []
+ui:
+  default_width: 450
+executor:
+  name: python
+  options:
+    spawn: false
+    entry: main.py
+title: Speech

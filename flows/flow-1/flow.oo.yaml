@@ -1,40 +1,7 @@
 nodes:
-  - task:
-      ui:
-        default_width: 450
-      inputs_def:
-        - handle: speek_text
-          description: Input
-          json_schema:
-            type: string
-            ui:widget: text
-        - handle: output_path
-          json_schema:
-            type: string
-            ui:widget: file
-          value: ""
-        - handle: voice
-          json_schema:
-            type: string
-          value: ""
-        - handle: SPEECH_KEY
-          json_schema:
-            contentMediaType: oomol/secret
-            type: string
-          value: ""
-        - handle: SPEECH_REGION
-          json_schema:
-            type: string
-          value: ""
-      outputs_def:
-        []
-      executor:
-        name: python
-        options:
-          entry: scriptlets/+python#1.py
-    title: Speech
-    icon: ":logos:python:"
-    node_id: +python#1
+  - task: self::speech
+    title: "Speech #1"
+    node_id: speech#1
     inputs_from:
       - handle: speek_text
         value: >-
