@@ -22,7 +22,14 @@ class Punctuation(Segment):
   kind: str = "punctuation"
 
 def decode_sentence(sentence: dict) -> Sentence:
+  segments: list[Segment] = []
+  for segment in sentence["segments"]:
+    kind: str = segment["kind"]
+    if kind == "word":
+      segments.append(Word(**segment))
+    elif kind == "punctuation":
+      segments.append(Punctuation(**segment))
   return Sentence(**{
     **sentence,
-    "segments": [Segment(**s) for s in sentence["segments"]]
+    "segments": segments
   })
