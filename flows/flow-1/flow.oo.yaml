@@ -14,7 +14,7 @@ nodes:
       - handle: key
         value: Custom,Azure,Speach
       - handle: granularity
-        value: none
+        value: sentence
       - handle: text
         value: 《卫报》的研究认为大多数人之后的词汇量都不会有太大的变化。它还指出，12000词汇量基本等同于流行报纸每天文章里的词汇量。但是大学毕业生的词汇量大约是其2倍，约23000个。莎士比亚则是所有英语作家中词汇量较大的之一，约30000个单词。
   - task: oomol-preview::audio-preview

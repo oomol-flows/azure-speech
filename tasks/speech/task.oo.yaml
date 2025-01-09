@@ -61,7 +61,7 @@ inputs_def:
           - None
           - Sentence
           - Word
-    value: none
+    value: sentence
   - handle: output_path
     json_schema:
       type: string
@@ -76,7 +76,51 @@ outputs_def:
     json_schema:
       type: array
       items:
-        type: string
+        type: object
+        required:
+          - text
+          - begin_at
+          - duration
+          - offset
+          - length
+          - kind
+          - segments
+        properties:
+          text:
+            type: string
+          begin_at:
+            type: number
+            minimum: 0
+          offset:
+            type: integer
+            minimum: 0
+          length:
+            type: integer
+            minimum: 0
+          kind:
+            const: sentence
+          segments:
+            type: array
+            items:
+              type: object
+              required:
+                - text
+                - begin_at
+                - duration
+                - offset
+                - length
+              properties:
+                text:
+                  type: string
+                begin_at:
+                  type: number
+                  minimum: 0
+                offset:
+                  type: integer
+                  minimum: 0
+                length:
+                  type: integer
+                  minimum: 0
     nullable: false
 ui:
   default_width: 413.3075034797966

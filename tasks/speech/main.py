@@ -65,7 +65,7 @@ def _raise_if_find_error(result: SpeechSynthesisResult):
         print("Did you set the speech resource key and region values?")
     raise Exception("Speech synthesis failed.")
 
-def _serialize_sentences(words: WordsCollection | None):
+def _serialize_sentences(words: WordsCollection | None) -> list[dict]:
   if words is None:
     return []
   else:
