@@ -1,4 +1,4 @@
-version: 0.0.1
+version: 0.0.2
 icon: ./icon.png
 scripts:
   # Script executed when the container is first loaded
@@ -13,4 +13,4 @@ name: azure-speech
 description: Use Azure AI Speech to synthesize the input text into a human-like voice.
 displayName: Azure Speech
 repository: https://github.com/oomol-flows/azure-speech
-releaseNotes: init the first version
+releaseNotes: "fix bug: will crash when convert to SRT"
