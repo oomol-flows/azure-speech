@@ -1,0 +1,22 @@
+{
+  "nodes": {
+    "speech#1": {
+      "contentWidth": 474.1989661644632,
+      "rfNode": {
+        "position": {
+          "x": 178,
+          "y": 87
+        }
+      }
+    },
+    "audio-preview#1": {
+      "contentWidth": 450,
+      "rfNode": {
+        "position": {
+          "x": 720.0126308787828,
+          "y": 206
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,132 @@
+inputs_def:
+  - handle: text
+    json_schema:
+      type: string
+      ui:widget: text
+  - handle: text_kind
+    json_schema:
+      enum:
+        - text
+        - ssml
+      ui:options:
+        labels:
+          - Text
+          - SSML
+    value: text
+  - handle: region
+    json_schema:
+      enum:
+        - eastasia
+        - southeastasia
+        - australiaeast
+        - northeurope
+        - westeurope
+        - eastus
+        - eastus2
+        - southcentralus
+        - westcentralus
+        - westus
+        - westus2
+        - brazilsouth
+      ui:options:
+        labels:
+          - East Asia
+          - Southeast Asia
+          - Australia east
+          - North Europe
+          - West Europe
+          - East US
+          - East US 2
+          - South central US
+          - West central US
+          - west US
+          - West US 2
+          - Brazil south
+    value: eastasia
+  - handle: key
+    json_schema:
+      contentMediaType: oomol/secret
+      type: string
+  - handle: voice
+    json_schema:
+      type: string
+  - handle: granularity
+    json_schema:
+      enum:
+        - none
+        - sentence
+        - word
+      ui:options:
+        labels:
+          - None
+          - Sentence
+          - Word
+    value: sentence
+  - handle: output_path
+    json_schema:
+      type: string
+      ui:widget: file
+    nullable: true
+outputs_def:
+  - handle: output_path
+    json_schema:
+      type: string
+      ui:widget: file
+  - handle: sentences
+    json_schema:
+      type: array
+      items:
+        type: object
+        required:
+          - text
+          - begin_at
+          - duration
+          - offset
+          - length
+          - kind
+          - segments
+        properties:
+          text:
+            type: string
+          begin_at:
+            type: number
+            minimum: 0
+          offset:
+            type: integer
+            minimum: 0
+          length:
+            type: integer
+            minimum: 0
+          kind:
+            const: sentence
+          segments:
+            type: array
+            items:
+              type: object
+              required:
+                - text
+                - begin_at
+                - duration
+                - offset
+                - length
+              properties:
+                text:
+                  type: string
+                begin_at:
+                  type: number
+                  minimum: 0
+                offset:
+                  type: integer
+                  minimum: 0
+                length:
+                  type: integer
+                  minimum: 0
+    nullable: false
+ui:
+  default_width: 413.3075034797966
+executor:
+  name: python
+  options:
+    entry: __init__.py
+    spawn: false
+title: Speech

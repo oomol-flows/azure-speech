@@ -1,1 +1,27 @@
-nodes: []
+nodes:
+  - task: self::speech
+    title: "Speech #1"
+    node_id: speech#1
+    inputs_from:
+      - handle: output_path
+        value:
+      - handle: voice
+        value: zh-CN-XiaochenNeural
+      - handle: region
+        value: eastasia
+      - handle: text_kind
+        value: text
+      - handle: key
+        value: Custom,Azure,Speach
+      - handle: granularity
+        value: sentence
+      - handle: text
+        value: 《卫报》的研究认为大多数人之后的词汇量都不会有太大的变化。它还指出，12000词汇量基本等同于流行报纸每天文章里的词汇量。但是大学毕业生的词汇量大约是其2倍，约23000个。莎士比亚则是所有英语作家中词汇量较大的之一，约30000个单词。
+  - task: oomol-preview::audio-preview
+    title: "Audio preview #1"
+    node_id: audio-preview#1
+    inputs_from:
+      - handle: audio_path
+        from_node:
+          - node_id: speech#1
+            output_handle: output_path
