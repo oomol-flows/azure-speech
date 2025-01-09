@@ -25,3 +25,11 @@ nodes:
         from_node:
           - node_id: speech#1
             output_handle: output_path
+  - task: self::srt-converter
+    title: "Sentences to SRT #1"
+    node_id: to-srt#1
+    inputs_from:
+      - handle: sentences
+        from_node:
+          - node_id: speech#1
+            output_handle: sentences

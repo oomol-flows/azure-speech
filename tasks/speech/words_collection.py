@@ -1,30 +1,9 @@
 from io import StringIO
 from sys import maxsize
-from dataclasses import dataclass
 from typing import Any
+
 from azure.cognitiveservices.speech import SpeechSynthesizer, SpeechSynthesisBoundaryType
-
-
-@dataclass
-class Segment:
-  text: str
-  begin_at: float
-  duration: float
-  offset: int
-  length: int
-
-@dataclass
-class Sentence(Segment):
-  segments: list[Segment]
-  kind: str = "sentence"
-
-@dataclass
-class Word(Segment):
-  kind: str = "word"
-
-@dataclass
-class Punctuation(Segment):
-  kind: str = "punctuation"
+from shared.segment import Punctuation, Sentence, Word
 
 # https://learn.microsoft.com/zh-cn/azure/ai-services/speech-service/how-to-speech-synthesis?tabs=browserjs%2Cterminal&pivots=programming-language-python#customize-audio-format
 class WordsCollection:
