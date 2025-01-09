@@ -1,0 +1,61 @@
+executor:
+  name: python
+  options:
+    entry: __init__.py
+inputs_def:
+  - handle: sentences
+    json_schema:
+      type: array
+      items:
+        type: object
+        required:
+          - text
+          - begin_at
+          - duration
+          - offset
+          - length
+          - kind
+          - segments
+        properties:
+          text:
+            type: string
+          begin_at:
+            type: number
+            minimum: 0
+          offset:
+            type: integer
+            minimum: 0
+          length:
+            type: integer
+            minimum: 0
+          kind:
+            const: sentence
+          segments:
+            type: array
+            items:
+              type: object
+              required:
+                - text
+                - begin_at
+                - duration
+                - offset
+                - length
+              properties:
+                text:
+                  type: string
+                begin_at:
+                  type: number
+                  minimum: 0
+                offset:
+                  type: integer
+                  minimum: 0
+                length:
+                  type: integer
+                  minimum: 0
+outputs_def:
+  - handle: srt
+    json_schema:
+      type: string
+title: Sentences to SRT
+ui:
+  default_width: 350
