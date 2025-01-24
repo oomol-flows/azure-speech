@@ -1,4 +1,4 @@
-version: 0.0.2
+version: 0.0.3
 icon: ./icon.png
 scripts:
   # Script executed when the container is first loaded
@@ -8,9 +8,9 @@ scripts:
     pip install --upgrade pip
     pip install -r requirements.txt
 dependencies:
-  oomol-preview: 0.0.1
+  oomol-preview: 0.0.2
 name: azure-speech
 description: Use Azure AI Speech to synthesize the input text into a human-like voice.
 displayName: Azure Speech
 repository: https://github.com/oomol-flows/azure-speech
-releaseNotes: "fix bug: will crash when convert to SRT"
+releaseNotes: upgrade depdencies.
