@@ -9,20 +9,20 @@
         }
       }
     },
-    "audio-preview#1": {
-      "contentWidth": 450,
-      "rfNode": {
-        "position": {
-          "x": 762.1105517954992,
-          "y": 87
-        }
-      }
-    },
     "to-srt#1": {
       "rfNode": {
         "position": {
           "x": 762.1105517954992,
           "y": 517.7269689596615
+        }
+      }
+    },
+    "audio_preview#1": {
+      "contentWidth": 450,
+      "rfNode": {
+        "position": {
+          "x": 762.1105517954992,
+          "y": 87
         }
       }
     }

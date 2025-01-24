@@ -14,14 +14,6 @@ nodes:
       - handle: granularity
         value: sentence
       - handle: text
-  - task: oomol-preview::audio-preview
-    title: "Audio preview #1"
-    node_id: audio-preview#1
-    inputs_from:
-      - handle: audio_path
-        from_node:
-          - node_id: speech#1
-            output_handle: output_path
   - task: self::srt-converter
     title: "Sentences to SRT #1"
     node_id: to-srt#1
@@ -30,3 +22,11 @@ nodes:
         from_node:
           - node_id: speech#1
             output_handle: sentences
+  - task: oomol-preview::audio_preview
+    title: "Audio preview #1"
+    node_id: audio_preview#1
+    inputs_from:
+      - handle: audio_path
+        from_node:
+          - node_id: speech#1
+            output_handle: output_path
