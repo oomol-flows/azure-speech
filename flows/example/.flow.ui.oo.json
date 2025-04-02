@@ -7,6 +7,15 @@
           "x": 178,
           "y": 87
         }
+      },
+      "sections": {
+        "inputs": {
+          "collapsed": {
+            "text": {
+              "[]": true
+            }
+          }
+        }
       }
     },
     "to-srt#1": {

@@ -8,7 +8,7 @@ scripts:
     pip install --upgrade pip
     pip install -r requirements.txt
 dependencies:
-  oomol-preview: 0.0.2
+  oomol-preview: 0.0.3
 name: azure-speech
 description: Use Azure AI Speech to synthesize the input text into a human-like voice.
 displayName: Azure Speech

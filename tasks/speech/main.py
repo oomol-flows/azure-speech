@@ -15,11 +15,11 @@ def main(params: dict, context: Context):
     output_path = os.path.join(context.session_dir, f"{context.job_id}.wav")
 
   speech_config = SpeechConfig(
-    subscription=params["key"], 
+    subscription=params["key"],
     region=params["region"],
   )
   speech_config.set_property(
-    property_id=PropertyId.SpeechServiceResponse_RequestSentenceBoundary, 
+    property_id=PropertyId.SpeechServiceResponse_RequestSentenceBoundary,
     value="true",
   )
   audio_config = AudioOutputConfig(
@@ -35,7 +35,7 @@ def main(params: dict, context: Context):
 
   speech_config.speech_synthesis_voice_name=params["voice"]
   speech_synthesizer = SpeechSynthesizer(
-    speech_config=speech_config, 
+    speech_config=speech_config,
     audio_config=audio_config,
   )
   words: WordsCollection | None = None
