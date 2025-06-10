@@ -7,6 +7,7 @@ from azure.cognitiveservices.speech import SpeechSynthesizer, SpeechSynthesisRes
 from azure.cognitiveservices.speech.audio import AudioOutputConfig
 from .words_collection import WordsCollection
 
+
 # https://learn.microsoft.com/zh-cn/azure/ai-services/speech-service/get-started-text-to-speech?tabs=linux%2Cterminal&pivots=programming-language-python
 # https://learn.microsoft.com/zh-cn/azure/ai-services/speech-service/language-support?tabs=tts
 def main(params: dict, context: Context):

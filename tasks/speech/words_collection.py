@@ -1,14 +1,13 @@
-from io import StringIO
-from sys import maxsize
 from typing import Any
 
 from azure.cognitiveservices.speech import SpeechSynthesizer, SpeechSynthesisBoundaryType
 from shared.segment import Punctuation, Segment, Sentence, Word
 
+
 # https://learn.microsoft.com/zh-cn/azure/ai-services/speech-service/how-to-speech-synthesis?tabs=browserjs%2Cterminal&pivots=programming-language-python#customize-audio-format
 class WordsCollection:
   def __init__(
-      self, 
+      self,
       synthesizer: SpeechSynthesizer,
       only_sentence: bool,
     ) -> None:

@@ -2,6 +2,7 @@ from math import floor
 from io import StringIO
 from shared.segment import decode_sentence
 
+
 def main(params: dict):
   buffer = StringIO()
   sentences: list[dict] = params["sentences"]
