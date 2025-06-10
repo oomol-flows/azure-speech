@@ -4,11 +4,10 @@ scripts:
   # Script executed when the container is first loaded
   # eg: bootstrap: pip install pandas
   bootstrap: |
-    sudo apt-get update
-    pip install --upgrade pip
-    pip install -r requirements.txt
+    set -e
+    poetry install --no-root
 dependencies:
-  oomol-preview: 0.0.3
+  oomol-preview: 0.0.4
 name: azure-speech
 description: Use Azure AI Speech to synthesize the input text into a human-like voice.
 displayName: Azure Speech
