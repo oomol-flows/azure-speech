@@ -4,7 +4,6 @@ nodes:
     node_id: speech#1
     inputs_from:
       - handle: output_path
-        value:
       - handle: voice
       - handle: region
         value: eastasia
