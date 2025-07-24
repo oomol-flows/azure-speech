@@ -13,8 +13,11 @@ from .words_collection import WordsCollection
 def main(params: dict, context: Context):
   output_path: str | None = params["output_path"]
   if output_path is None:
-    output_path = os.path.join(context.session_dir, f"{context.job_id}.wav")
-
+    output_path = os.path.join(
+      context.session_dir,
+      "azure-speech",
+      f"{context.job_id}.wav",
+    )
   speech_config = SpeechConfig(
     subscription=params["key"],
     region=params["region"],
