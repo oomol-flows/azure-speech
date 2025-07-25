@@ -1,4 +1,4 @@
-version: 0.0.4
+version: 0.0.5
 icon: ./icon.png
 scripts:
   # Script executed when the container is first loaded
@@ -12,4 +12,4 @@ name: azure-speech
 description: Use Azure AI Speech to synthesize the input text into a human-like voice.
 displayName: Azure Speech
 repository: https://github.com/oomol-flows/azure-speech
-releaseNotes: migrate to poetry.
+releaseNotes: add groups
